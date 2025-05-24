@@ -13,10 +13,10 @@ public class JTetromino extends Tetromino {
     @Override
     protected void setElements(Coordonnees coordonnees, Couleur couleur) {
         this.elements = new Element[]{
+            new Element(new Coordonnees(coordonnees.getAbscisse(), coordonnees.getOrdonnee() + 2), couleur),     // coin (bas gauche)
+            new Element(new Coordonnees(coordonnees.getAbscisse(), coordonnees.getOrdonnee() + 1), couleur),
             new Element(new Coordonnees(coordonnees.getAbscisse(), coordonnees.getOrdonnee()), couleur),
-            new Element(new Coordonnees(coordonnees.getAbscisse() - 1, coordonnees.getOrdonnee()), couleur),
-            new Element(new Coordonnees(coordonnees.getAbscisse() - 2, coordonnees.getOrdonnee()), couleur),
-            new Element(new Coordonnees(coordonnees.getAbscisse() - 2, coordonnees.getOrdonnee() + 1), couleur)
+            new Element(new Coordonnees(coordonnees.getAbscisse() + 1, coordonnees.getOrdonnee() + 2), couleur)
         };
     }
 }
