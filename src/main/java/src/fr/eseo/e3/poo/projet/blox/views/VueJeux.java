@@ -1,22 +1,24 @@
-package src.fr.eseo.e3.poo.projet.blox.vue;
+package src.fr.eseo.e3.poo.projet.blox.views;
 
 import src.fr.eseo.e3.poo.projet.blox.modele.Puits;
 import src.fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Tas;
+import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class VueJeux {
-    public static void main(String[] args) {
-        afficherPageJeu();
-    }
+public class VueJeux extends JPanel {
 
-    public static void afficherPageJeu() {
-        // Initialisation du puits
-        Puits puits = new Puits();
-        Tas tas = new Tas(puits);
+    private final Puits puits;
+    private final Tas tas;
+    private final VuePuits vuePuits;
+
+    public VueJeux() {
+        // Initialisation du puits et du tas
+        this.puits = new Puits();
+        this.tas = new Tas(puits);
         puits.setTas(tas);
 
         UsineDePiece.setMode(0);
@@ -25,21 +27,26 @@ public class VueJeux {
         puits.setPieceSuivante(piece);
         puits.setPieceSuivante(piece2);
 
-        VuePuits vuePuits = new VuePuits(puits, 30);
+        this.vuePuits = new VuePuits(puits, 30);
 
-        // Panel pour centrer la grille
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setOpaque(false); // Transparent pour voir le fond si besoin
-        centerPanel.add(vuePuits);
-
-        JFrame frame = new JFrame("Falling Blox");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(centerPanel);
-        frame.pack(); // <-- pour que la grille ait la bonne taille
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // plein écran
-        frame.setVisible(true);
+        // Centrage de la grille
+        setLayout(new GridBagLayout());
+        setOpaque(false);
+        add(vuePuits);
 
         vuePuits.setFocusable(true);
         vuePuits.requestFocusInWindow();
+    }
+
+    public Puits getPuits() {
+        return puits;
+    }
+
+    public Tas getTas() {
+        return tas;
+    }
+
+    public VuePuits getVuePuits() {
+        return vuePuits;
     }
 }
