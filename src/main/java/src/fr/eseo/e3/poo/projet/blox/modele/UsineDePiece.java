@@ -3,7 +3,9 @@ package src.fr.eseo.e3.poo.projet.blox.modele;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.ITetromino;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.LTetromino;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.OTetromino;
+import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.JTetromino;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.Tetromino;
+import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.TTetromino;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -46,6 +48,8 @@ public class UsineDePiece {
             tetrominos.add(new OTetromino(new Coordonnees(2,3),Couleur.ROUGE));
             tetrominos.add(new ITetromino(new Coordonnees(2,3),Couleur.ORANGE));
             tetrominos.add(new LTetromino(new Coordonnees(2, 3), Couleur.BLEU));
+            tetrominos.add(new JTetromino(new Coordonnees(2, 3), Couleur.VERT));
+            tetrominos.add(new TTetromino(new Coordonnees(2, 3), Couleur.JAUNE));
 
             piece = tetrominos.get(rand.nextInt(tetrominos.size()));
         }
@@ -53,6 +57,8 @@ public class UsineDePiece {
             tetrominos.add(new OTetromino(new Coordonnees(2,3),Couleur.ROUGE));
             tetrominos.add(new ITetromino(new Coordonnees(2,3),Couleur.ORANGE));
             tetrominos.add(new LTetromino(new Coordonnees(2, 3), Couleur.BLEU));
+            tetrominos.add(new JTetromino(new Coordonnees(2, 3), Couleur.VERT));
+            tetrominos.add(new TTetromino(new Coordonnees(2, 3), Couleur.JAUNE));
             
             if(ACUTALPIECE > tetrominos.size()){
                 ACUTALPIECE = 0;
@@ -67,6 +73,8 @@ public class UsineDePiece {
             tetrominos.add(new OTetromino(new Coordonnees(2,3),Couleur.values()[rand.nextInt(Couleur.values().length)]));
             tetrominos.add(new ITetromino(new Coordonnees(2,3),Couleur.values()[rand.nextInt(Couleur.values().length)]));
             tetrominos.add(new LTetromino(new Coordonnees(2,3),Couleur.values()[rand.nextInt(Couleur.values().length)]));
+            tetrominos.add(new JTetromino(new Coordonnees(2,3),Couleur.values()[rand.nextInt(Couleur.values().length)]));
+            tetrominos.add(new TTetromino(new Coordonnees(2,3),Couleur.values()[rand.nextInt(Couleur.values().length)]));
 
 
             piece = tetrominos.get(rand.nextInt(tetrominos.size()));
