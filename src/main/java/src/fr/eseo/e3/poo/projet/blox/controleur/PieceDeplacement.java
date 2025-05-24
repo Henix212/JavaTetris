@@ -81,5 +81,18 @@ public class PieceDeplacement extends ControllAdaptateur  {
             }
             vuePuits.repaint();
         }
+        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE) {
+            try {
+                while (true) {
+                    puits.getPieceActuelle().deplacerDe(0, 1);
+                }
+            } catch (Exception ex) {
+                // Collision détectée, on fixe la pièce
+                puits.getTas().ajouterElements(puits.getPieceActuelle());
+                puits.getTas().supprimerLignesCompletes();
+                this.puits.setPieceSuivante(UsineDePiece.genererTetromino());
+            }
+            vuePuits.repaint();
+        }
     }
 }
