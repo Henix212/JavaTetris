@@ -42,7 +42,6 @@ public abstract class Tetromino implements Piece {
                     throw new BloxException("Collision avec un élément du tas", BloxException.BLOX_COLLISION);
                 }
             }
-
         }
 
         // Si tout est OK, déplacer les éléments
