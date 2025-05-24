@@ -60,4 +60,26 @@ public class PieceDeplacement extends ControllAdaptateur  {
         }
         this.vuePuits.repaint();
     }
+
+    @Override
+    public void keyPressed(java.awt.event.KeyEvent e) {
+        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT) {
+            try { puits.getPieceActuelle().deplacerDe(-1, 0); } catch (Exception ex) {}
+            vuePuits.repaint();
+        }
+        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
+            try { puits.getPieceActuelle().deplacerDe(1, 0); } catch (Exception ex) {}
+            vuePuits.repaint();
+        }
+        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_DOWN) {
+            try { 
+                puits.getPieceActuelle().deplacerDe(0, 1); 
+            } catch (Exception ex) {
+                puits.getTas().ajouterElements(puits.getPieceActuelle());
+                puits.getTas().supprimerLignesCompletes();
+                this.puits.setPieceSuivante(UsineDePiece.genererTetromino());
+            }
+            vuePuits.repaint();
+        }
+    }
 }

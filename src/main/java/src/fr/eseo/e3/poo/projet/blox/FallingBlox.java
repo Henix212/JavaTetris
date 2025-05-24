@@ -30,7 +30,8 @@ public class FallingBlox {
         VuePuits vuePuits = new VuePuits(puits, 30); // Taille des cases définie à 30 pixels
         VuePiece vuePiece = new VuePiece(puits.getPieceActuelle(), 30);
         vuePuits.setVuePiece(vuePiece);
-
+        vuePuits.setFocusable(true);
+        vuePuits.requestFocusInWindow();
         // Configuration de la fenêtre
         JFrame frame = new JFrame("Falling Blox");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

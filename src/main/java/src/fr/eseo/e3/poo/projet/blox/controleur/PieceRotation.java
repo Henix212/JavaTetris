@@ -19,11 +19,19 @@ public class PieceRotation extends ControllAdaptateur {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        verifierEtTourner(e);
+        verifierEtTournerMouse(e);
         vuePuits.repaint();
     }
 
-    private void verifierEtTourner(MouseEvent e) {
+    @Override
+    public void keyPressed(java.awt.event.KeyEvent e) {
+        if (e.getKeyCode() == java.awt.event.KeyEvent.VK_UP) {
+            verifierEtTournerKey(e);
+            vuePuits.repaint();
+        }
+    }
+
+    private void verifierEtTournerMouse(MouseEvent e) {
         if (puits.getPieceActuelle() != null) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 try {
@@ -76,6 +84,57 @@ public class PieceRotation extends ControllAdaptateur {
                     puits.getPieceActuelle().tourner(false);
                 } catch (Exception e1) {
                     e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void verifierEtTournerKey(java.awt.event.KeyEvent e) {
+        if (puits.getPieceActuelle() != null) {
+            try {
+                puits.getPieceActuelle().tourner(true);
+            } catch (BloxException e1) {
+                if ("Sortie du puits après rotation".equals(e1.getMessage())) {
+                    boolean rotationOk = false;
+                    int abscisseInit = puits.getPieceActuelle().getElements().get(0).getCoordonnees().getAbscisse();
+                    int ordonneeInit = puits.getPieceActuelle().getElements().get(0).getCoordonnees().getOrdonnee();
+
+                    // On tente de décaler la pièce à gauche ou à droite, 1 ou 2 cases max
+                    for (int decalage = 1; decalage <= 2 && !rotationOk; decalage++) {
+                        for (int sens : new int[]{-1, 1}) {
+                            boolean deplacementPossible = true;
+                            // Déplacement case par case
+                            for (int i = 0; i < decalage; i++) {
+                                try {
+                                    puits.getPieceActuelle().deplacerDe(sens, 0);
+                                } catch (Exception ex) {
+                                    // Annule les déplacements déjà faits
+                                    for (int j = 0; j < i; j++) {
+                                        puits.getPieceActuelle().setPosition(abscisseInit, ordonneeInit);
+                                    }
+                                    deplacementPossible = false;
+                                    break;
+                                }
+                            }
+                            if (deplacementPossible) {
+                                try {
+                                    puits.getPieceActuelle().tourner(true);
+                                    rotationOk = true;
+                                    break;
+                                } catch (BloxException ex) {
+                                    // Annule le déplacement si la rotation échoue
+                                    for (int i = 0; i < decalage; i++) {
+                                        puits.getPieceActuelle().setPosition(abscisseInit, ordonneeInit);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!rotationOk) {
+                        // On remet la pièce à sa position initiale si tout a échoué
+                        puits.getPieceActuelle().setPosition(abscisseInit, ordonneeInit);
+                        System.out.println("Rotation impossible même après décalage.");
+                    }
                 }
             }
         }

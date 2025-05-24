@@ -32,7 +32,9 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.addMouseListener(pieceDeplacement);
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
+        this.addKeyListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
+        this.addKeyListener(pieceRotation);
     }
 
     @Override
@@ -97,6 +99,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             this.removeMouseMotionListener(pieceDeplacement);
             this.removeMouseWheelListener(pieceDeplacement);
             this.removeMouseListener(pieceRotation);
+            this.removeKeyListener(pieceDeplacement);
+            this.removeKeyListener(pieceRotation);
         }
         this.puits = puits;
         this.puits.addPropertyChangeListener(this);
@@ -104,6 +108,8 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
         this.addMouseMotionListener(pieceDeplacement);
         this.addMouseWheelListener(pieceDeplacement);
         this.addMouseListener(pieceRotation);
+        this.addKeyListener(pieceDeplacement);
+        this.addKeyListener(pieceRotation);
     }
 
     public void setTaille(int taille) {
