@@ -66,6 +66,9 @@ public class Tas {
 
     public void ajouterElements(Piece piece) {
         this.elements.addAll(piece.getElements());
+        if (isGameOver()){
+            throw new IllegalStateException("Le jeu est terminé, vous ne pouvez pas ajouter de pièces.");
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -82,6 +85,15 @@ public class Tas {
 
     public Puits getPuits() {
         return this.puits;
+    }
+
+    public boolean isGameOver() {
+        for (Element elt : this.elements) {
+            if (elt.getCoordonnees().getOrdonnee() <= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void supprimerLignesCompletes() {
