@@ -141,4 +141,10 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             repaint();
         }
     }
+
+    @Override
+    public Dimension getPreferredSize() {
+        // largeur = nbColonnes * taille, hauteur = nbLignes * taille
+        return new Dimension(puits.getLargeur() * taille, puits.getProfondeur() * taille);
+    }
 }
