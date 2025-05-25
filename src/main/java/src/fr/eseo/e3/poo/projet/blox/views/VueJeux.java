@@ -29,7 +29,6 @@ public class VueJeux extends JPanel {
 
         this.vuePuits = new VuePuits(puits, 30);
 
-        // Centrage de la grille
         setLayout(new GridBagLayout());
         setOpaque(false);
         add(vuePuits);

@@ -11,6 +11,8 @@ import java.util.Random;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
 
+import src.fr.eseo.e3.poo.projet.blox.utils.Globals;
+
 
 public class Tas {
     public static final String EVT_LIGNE_COMPLETE = "COMPLETE";
@@ -67,7 +69,7 @@ public class Tas {
     public void ajouterElements(Piece piece) {
         this.elements.addAll(piece.getElements());
         if (isGameOver()){
-            throw new IllegalStateException("Le jeu est terminé, vous ne pouvez pas ajouter de pièces.");
+            Globals.routeur.afficherVue("GAMEOVER");
         }
     }
 
