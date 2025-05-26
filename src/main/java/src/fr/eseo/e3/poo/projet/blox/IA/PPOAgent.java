@@ -1,50 +1,88 @@
 package src.fr.eseo.e3.poo.projet.blox.IA;
 
+import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
 import java.util.*;
+import javax.swing.SwingUtilities;
 
 public class PPOAgent {
     private final NeuralNetwork network;
     private final int stateDim;
     private final int actionDim;
-    private final Random random = new Random();
+    private final VuePuits vuePuits;
+    private final Random random;
 
-    public PPOAgent(NeuralNetwork network, int stateDim, int actionDim) {
+    public PPOAgent(NeuralNetwork network, int stateDim, int actionDim, VuePuits vuePuits) {
         this.network = network;
         this.stateDim = stateDim;
         this.actionDim = actionDim;
+        this.vuePuits = vuePuits;
+        this.random = new Random();
     }
 
-    public void train(int maxTimesteps, int updateEveryN, float gamma) {
+    public void train(int maxTimesteps, int updateEveryN, float gamma, TetrisEnv env) {
         List<float[]> states = new ArrayList<>();
         List<Integer> actions = new ArrayList<>();
         List<Float> rewards = new ArrayList<>();
         List<Float> oldProbs = new ArrayList<>();
         List<Float> values = new ArrayList<>();
 
-        float[] state = new float[stateDim]; // à remplacer par env.reset()
+        float[] state = env.reset();  // Reset initial de l'environnement
+        int episodeCount = 0;
+        float totalReward = 0;
 
         for (int t = 0; t < maxTimesteps; t++) {
+            // 1. Prédire l'action avec le réseau
             INDArray stateND = Nd4j.create(state).reshape(1, stateDim);
-            INDArray output = network.getModel().output(stateND);
+            INDArray[] outputArr = network.getModel().output(stateND);
+            INDArray output = outputArr[0];
             float[] probs = output.toFloatVector();
 
+            // 2. Choisir une action
             int action = sampleFromDistribution(probs);
-            float value = 0f; // Valeur d’état, si tu utilises une tête de value séparée.
+            
+            // 3. Exécuter l'action dans l'environnement
+            float reward = env.step(action);
+            float[] nextState = env.getState();
+            boolean done = env.isGameOver();
 
-            // Simuler action → environnement (à implémenter)
-            float reward = 0f; // TODO: appeler environnement
-            float[] nextState = state.clone(); // TODO: nouvel état réel
+            totalReward += reward;
 
-            states.add(state);
+            // 4. Stocker la transition
+            states.add(state.clone());
             actions.add(action);
             rewards.add(reward);
             oldProbs.add(probs[action]);
+            
+            // Estimation de la valeur (si tu as une tête value)
+            INDArray valueND = network.getValue(stateND);
+            float value = valueND.getFloat(0);
             values.add(value);
+
+            // 5. Mise à jour de l'état
             state = nextState;
 
+            // 6. Affichage de l'environnement
+            if (vuePuits != null) {
+                SwingUtilities.invokeLater(() -> vuePuits.repaint());
+                try {
+                    Thread.sleep(100); // Augmente le délai pour mieux voir le jeu
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
+            // 7. Si épisode terminé
+            if (done) {
+                episodeCount++;
+                System.out.println("Episode " + episodeCount + " terminé avec reward total: " + totalReward);
+                state = env.reset();
+                totalReward = 0;
+            }
+
+            // 8. Mise à jour du réseau (PPO update)
             if ((t + 1) % updateEveryN == 0) {
                 float[] advantages = computeAdvantages(rewards, values, gamma);
                 float[] returns = new float[advantages.length];
@@ -52,9 +90,21 @@ public class PPOAgent {
                     returns[i] = advantages[i] + values.get(i);
                 }
 
-                // Entraînement (à adapter selon ta loss personnalisée PPO)
-                // DL4J ne propose pas PPO directement → il faudra définir une custom loss ou utiliser RL4J
+                // Conversion en tenseurs ND4J pour l'entraînement
+                INDArray statesND = Nd4j.create(states.size(), stateDim);
+                for (int i = 0; i < states.size(); i++) {
+                    statesND.putRow(i, Nd4j.create(states.get(i)));
+                }
 
+                INDArray actionsND = Nd4j.create(actions.stream().mapToInt(i -> i).toArray());
+                INDArray advantagesND = Nd4j.create(advantages);
+                INDArray returnsND = Nd4j.create(returns);
+                INDArray oldProbsND = Nd4j.create(oldProbs.stream().mapToDouble(f -> f).toArray());
+
+                // Mise à jour du réseau avec PPO
+                network.update(statesND, actionsND, advantagesND, returnsND, oldProbsND);
+
+                // Vider les buffers
                 states.clear();
                 actions.clear();
                 rewards.clear();
@@ -64,28 +114,29 @@ public class PPOAgent {
         }
     }
 
-    private int sampleFromDistribution(float[] distribution) {
+    private int sampleFromDistribution(float[] probs) {
         float r = random.nextFloat();
-        float cumProb = 0f;
-        for (int i = 0; i < distribution.length; i++) {
-            cumProb += distribution[i];
-            if (r < cumProb) {
+        float cumSum = 0;
+        for (int i = 0; i < probs.length; i++) {
+            cumSum += probs[i];
+            if (r < cumSum) {
                 return i;
             }
         }
-        return distribution.length - 1;
+        return probs.length - 1;
     }
 
     private float[] computeAdvantages(List<Float> rewards, List<Float> values, float gamma) {
         int n = rewards.size();
         float[] advantages = new float[n];
-        float[] returns = new float[n];
-        float futureReturn = 0f;
+        float nextValue = 0;  // Pour le dernier état
+        
         for (int t = n - 1; t >= 0; t--) {
-            futureReturn = rewards.get(t) + gamma * futureReturn;
-            returns[t] = futureReturn;
-            advantages[t] = returns[t] - values.get(t);
+            float delta = rewards.get(t) + gamma * nextValue - values.get(t);
+            advantages[t] = delta;
+            nextValue = values.get(t);
         }
+        
         return advantages;
     }
 }
