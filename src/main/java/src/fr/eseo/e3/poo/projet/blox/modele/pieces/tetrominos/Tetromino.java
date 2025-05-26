@@ -143,4 +143,30 @@ public abstract class Tetromino implements Piece {
             element.setCoordonnes(nouvelleCoord);
         }
     }
+
+    @Override
+    public Piece clone() {
+        try {
+            Class<? extends Tetromino> clazz = this.getClass();
+
+            Coordonnees pivot = new Coordonnees(
+                elements[0].getCoordonnees().getAbscisse(),
+                elements[0].getCoordonnees().getOrdonnee()
+            );
+            Couleur couleur = elements[0].getCouleur();
+
+            Tetromino clone = clazz.getConstructor(Coordonnees.class, Couleur.class)
+                    .newInstance(pivot, couleur);
+
+            for (int i = 0; i < elements.length; i++) {
+                Coordonnees c = elements[i].getCoordonnees();
+                clone.elements[i].setCoordonnes(new Coordonnees(c.getAbscisse(), c.getOrdonnee()));
+            }
+
+            clone.setPuits(this.getPuits());
+            return clone;
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors du clonage du Tetromino", e);
+        }
+    }
 }

@@ -19,4 +19,6 @@ public interface Piece {
     void deplacerDe(int deltaX, int deltaY) throws BloxException;
 
     void tourner(boolean sensHoraire) throws BloxException;
+
+    Piece clone();
 }

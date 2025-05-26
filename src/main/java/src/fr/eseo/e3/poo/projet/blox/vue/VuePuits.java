@@ -58,6 +58,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             g2D.drawLine(x, 0, x, this.getHeight());
         }
 
+        // Dessiner les éléments du tas
         for (Element elt : puits.getTas().getElements()) {
             int x = Math.round(elt.getCoordonnees().getAbscisse() * largeurCase);
             int y = Math.round(elt.getCoordonnees().getOrdonnee() * hauteurCase);
@@ -73,21 +74,14 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
             g2D.drawRect(x, y, w, h);
         }
 
-        // DESSINER LA PIECE ACTUELLE DIRECTEMENT
+        // DESSINER LE GHOST AVANT LA PIECE ACTUELLE
         Piece piece = puits.getPieceActuelle();
         if (piece != null) {
-            for (Element elt : piece.getElements()) {
-                int x = Math.round(elt.getCoordonnees().getAbscisse() * largeurCase);
-                int y = Math.round(elt.getCoordonnees().getOrdonnee() * hauteurCase);
-                int w = Math.round(largeurCase);
-                int h = Math.round(hauteurCase);
+            VueGhost vueGhost = new VueGhost(piece, this.taille);
+            vueGhost.afficherPiece(g2D, largeurCase, hauteurCase);
 
-                g2D.setColor(elt.getCouleur().getCouleurPourAffichage());
-                g2D.fill3DRect(x, y, w, h, false);
-
-                g2D.setColor(Color.BLACK);
-                g2D.drawRect(x, y, w, h);
-            }
+            VuePiece vuePiece = new VuePiece(piece, this.taille);
+            vuePiece.afficherPiece(g2D, largeurCase, hauteurCase);
         }
 
         g2D.dispose();

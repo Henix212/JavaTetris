@@ -1,7 +1,7 @@
 package src.fr.eseo.e3.poo.projet.blox.vue;
 
-import src.fr.eseo.e3.poo.projet.blox.modele.Coordonnees;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
+import src.fr.eseo.e3.poo.projet.blox.modele.Element;
 
 import java.awt.*;
 
@@ -26,14 +26,21 @@ public class VuePiece {
     }
 
     public void afficherPiece(Graphics2D g2D, float largeurCase, float hauteurCase) {
-        for(int i = 0; i < this.piece.getElements().size(); i++) {
-            if (i == 0){
-                g2D.setColor(teinte(piece.getElements().get(i).getCouleur().getCouleurPourAffichage()));
-            } else {
-                g2D.setColor(piece.getElements().get(i).getCouleur().getCouleurPourAffichage());
-            }
-            Coordonnees coordonnees = this.piece.getElements().get(i).getCoordonnees();
-            g2D.fill3DRect((int) (coordonnees.getAbscisse() * largeurCase), (int) (coordonnees.getOrdonnee() * hauteurCase), (int) largeurCase, (int) hauteurCase,false);
+        for (Element elt : this.piece.getElements()) {
+            int x = Math.round(elt.getCoordonnees().getAbscisse() * largeurCase);
+            int y = Math.round(elt.getCoordonnees().getOrdonnee() * hauteurCase);
+            int w = Math.round(largeurCase);
+            int h = Math.round(hauteurCase);
+
+            g2D.setColor(getCouleurAffichage(elt));
+            g2D.fill3DRect(x, y, w, h, false);
+
+            g2D.setColor(Color.BLACK);
+            g2D.drawRect(x, y, w, h);
         }
+    }
+
+    protected Color getCouleurAffichage(Element elt) {
+        return elt.getCouleur().getCouleurPourAffichage();
     }
 }
