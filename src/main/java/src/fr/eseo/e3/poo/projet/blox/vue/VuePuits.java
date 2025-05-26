@@ -5,9 +5,13 @@ import src.fr.eseo.e3.poo.projet.blox.controleur.PieceRotation;
 import src.fr.eseo.e3.poo.projet.blox.modele.Puits;
 import src.fr.eseo.e3.poo.projet.blox.modele.Element;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
+import src.fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -18,6 +22,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     private VuePiece vuePiece;
     private PieceDeplacement pieceDeplacement;
     private PieceRotation pieceRotation;
+    private Timer graviteTimer;
 
     public VuePuits(Puits puits) {
         this(puits,TAILLE_PAR_DEFAUT);
@@ -140,5 +145,33 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     public Dimension getPreferredSize() {
         // largeur = nbColonnes * taille, hauteur = nbLignes * taille
         return new Dimension(puits.getLargeur() * taille, puits.getProfondeur() * taille);
+    }
+
+    public void demarrerGravite() {
+        if (graviteTimer != null && graviteTimer.isRunning()) {
+            graviteTimer.stop();
+        }
+        graviteTimer = new Timer(850, new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (puits.getPieceActuelle() != null) {
+                        puits.getPieceActuelle().deplacerDe(0, 1);
+                        repaint();
+                    }
+                } catch (Exception ex) {
+                    puits.getTas().ajouterElements(puits.getPieceActuelle());
+                    puits.getTas().supprimerLignesCompletes();
+                    puits.setPieceSuivante(UsineDePiece.genererTetromino());
+                }
+            }
+        });
+        graviteTimer.start();
+    }
+
+    public void arreterGravite() {
+        if (graviteTimer != null) {
+            graviteTimer.stop();
+        }
     }
 }

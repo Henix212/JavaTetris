@@ -28,6 +28,7 @@ public class VueJeux extends JPanel {
         puits.setPieceSuivante(piece2);
 
         this.vuePuits = new VuePuits(puits, 30);
+        this.vuePuits.demarrerGravite();
 
         setLayout(new GridBagLayout());
         setOpaque(false);
