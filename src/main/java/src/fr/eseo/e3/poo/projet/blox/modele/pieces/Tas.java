@@ -102,7 +102,6 @@ public class Tas {
         int largeur = puits.getLargeur();
         int profondeur = puits.getProfondeur();
 
-        // Compter le nombre d'éléments par ligne
         int[] compteurs = new int[profondeur];
         for (Element elt : elements) {
             int y = elt.getCoordonnees().getOrdonnee();
@@ -111,14 +110,13 @@ public class Tas {
             }
         }
 
-        // Chercher les lignes complètes
+        int lignesSupprimees = 0;
+
         for (int y = 0; y < profondeur; y++) {
             final int ligne = y;
             if (compteurs[ligne] == largeur) {
-                // Supprimer tous les éléments de cette ligne
                 elements.removeIf(elt -> elt.getCoordonnees().getOrdonnee() == ligne);
 
-                // Faire descendre tous les éléments au-dessus
                 for (Element elt : elements) {
                     if (elt.getCoordonnees().getOrdonnee() < ligne) {
                         elt.setCoordonnes(new Coordonnees(
@@ -127,12 +125,16 @@ public class Tas {
                         ));
                     }
                 }
-                // Après suppression et descente, il peut y avoir d'autres lignes complètes plus haut
-                // Donc recommence à zéro
+
+                lignesSupprimees++; 
                 supprimerLignesCompletes();
                 break;
             }
         }
+
+        if (lignesSupprimees > 0) {
+            Globals.score.ajouter(lignesSupprimees * 100);
+        }   
     }
 }
 

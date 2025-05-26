@@ -23,9 +23,9 @@ public class VueMenu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 routeur.afficherVue("JEUX");
-                // Donne le focus clavier à la grille de jeu après le changement de vue
                 SwingUtilities.invokeLater(() -> {
                     VueJeux vueJeux = (VueJeux) routeur.getVue("JEUX");
+                    vueJeux.getVuePuits().demarrerGravite(); // <-- Démarre la gravité ici
                     vueJeux.getVuePuits().requestFocusInWindow();
                 });
             }

@@ -5,6 +5,7 @@ import src.fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Tas;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
+import src.fr.eseo.e3.poo.projet.blox.utils.Globals;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,9 @@ public class VueJeux extends JPanel {
     private final Puits puits;
     private final Tas tas;
     private final VuePuits vuePuits;
+    private final JLabel scoreLabel;
 
     public VueJeux() {
-        // Initialisation du puits et du tas
         this.puits = new Puits();
         this.tas = new Tas(puits);
         puits.setTas(tas);
@@ -28,14 +29,45 @@ public class VueJeux extends JPanel {
         puits.setPieceSuivante(piece2);
 
         this.vuePuits = new VuePuits(puits, 30);
-        this.vuePuits.demarrerGravite();
+
+        // Score label centré
+        scoreLabel = new JLabel("Score : " + Globals.score.getScore(), SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        scoreLabel.setForeground(Color.WHITE);
 
         setLayout(new GridBagLayout());
         setOpaque(false);
-        add(vuePuits);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Score en haut, centré
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(scoreLabel, gbc);
+
+        // Terrain centré en dessous
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        add(vuePuits, gbc);
 
         vuePuits.setFocusable(true);
         vuePuits.requestFocusInWindow();
+
+        Globals.score.addPropertyChangeListener(event -> {
+            if ("SCORE".equals(event.getPropertyName())) {
+                updateScore();
+            }
+        });
+    }
+
+    public void updateScore() {
+        scoreLabel.setText("Score : " + Globals.score.getScore());
     }
 
     public Puits getPuits() {
