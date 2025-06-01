@@ -15,11 +15,28 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour TTetromino.
+ * Cette classe teste le comportement spécifique de la pièce T du jeu Tetris.
+ * Les tests vérifient :
+ * - L'initialisation correcte des éléments (forme en T)
+ * - La couleur uniforme de tous les éléments
+ * - Les déplacements légaux
+ * - Les rotations dans les deux sens
+ *
+ * @author Hugo
+ */
 public class TTetrominoTest {
 
+    /** La pièce T à tester */
     private TTetromino piece;
+    /** Le puits de jeu associé à la pièce */
     private Puits puits;
 
+    /**
+     * Initialise l'environnement de test avant chaque méthode.
+     * Crée un puits de dimensions 10x20 et une pièce T en position (5,5) de couleur VIOLET.
+     */
     @BeforeEach
     public void setUp() {
         puits = new Puits(10, 20);
@@ -28,6 +45,13 @@ public class TTetrominoTest {
         piece.setPuits(puits);
     }
 
+    /**
+     * Teste l'initialisation des éléments de la pièce T.
+     * Vérifie que :
+     * - La pièce contient exactement 4 éléments
+     * - Les éléments forment un T
+     * - Les coordonnées sont correctement positionnées autour du point central
+     */
     @Test
     public void testElementsInitialisation() {
         List<Element> elements = piece.getElements();
@@ -43,6 +67,10 @@ public class TTetrominoTest {
         assertTrue(coords.contains(new Coordonnees(3, 5)));
     }
 
+    /**
+     * Teste la couleur des éléments de la pièce.
+     * Vérifie que tous les éléments de la pièce ont la même couleur (VIOLET).
+     */
     @Test
     public void testCouleur() {
         for (Element element : piece.getElements()) {
@@ -50,12 +78,20 @@ public class TTetrominoTest {
         }
     }
 
+    /**
+     * Teste les déplacements légaux de la pièce.
+     * Vérifie que la pièce peut se déplacer d'une case vers le bas ou sur le côté.
+     */
     @Test
     public void testDeplacerDeSansException() {
         assertDoesNotThrow(() -> piece.deplacerDe(1, 0));
         assertDoesNotThrow(() -> piece.deplacerDe(0, 1));
     }
 
+    /**
+     * Teste les rotations de la pièce.
+     * Vérifie que la pièce peut tourner dans les deux sens (horaire et anti-horaire).
+     */
     @Test
     public void testTournerSansException() {
         assertDoesNotThrow(() -> piece.tourner(true));

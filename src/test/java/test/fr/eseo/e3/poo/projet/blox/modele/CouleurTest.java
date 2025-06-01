@@ -8,8 +8,30 @@ import java.awt.Color;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour Couleur.
+ * Cette classe teste le comportement de l'énumération des couleurs utilisées dans le jeu Tetris.
+ * Les tests vérifient :
+ * - L'association correcte entre les constantes et les couleurs AWT
+ * - Le nombre total de constantes de couleur
+ * - La méthode valueOf pour la conversion de chaînes
+ * - Les noms des constantes de couleur
+ *
+ * @author Hugo
+ */
 public class CouleurTest {
 
+    /**
+     * Teste l'association entre les constantes de couleur et les couleurs AWT.
+     * Vérifie que chaque constante de couleur est associée à la bonne couleur AWT :
+     * - ROUGE -> Color.RED
+     * - ORANGE -> Color.ORANGE
+     * - BLEU -> Color.BLUE
+     * - VERT -> Color.GREEN
+     * - JAUNE -> Color.YELLOW
+     * - CYAN -> Color.CYAN
+     * - VIOLET -> Color personnalisé (128, 0, 128)
+     */
     @Test
     @DisplayName("Test des couleurs associées à chaque constante")
     void testCouleursAssociees() {
@@ -22,6 +44,10 @@ public class CouleurTest {
         assertEquals(new Color(128, 0, 128), Couleur.VIOLET.getCouleurPourAffichage(), "La couleur associée à VIOLET devrait être un violet personnalisé");
     }
 
+    /**
+     * Teste le nombre total de constantes de couleur.
+     * Vérifie que l'énumération contient exactement 7 constantes de couleur.
+     */
     @Test
     @DisplayName("Test de l'existence de toutes les constantes")
     void testNombreDeConstantes() {
@@ -29,6 +55,10 @@ public class CouleurTest {
         assertEquals(7, couleurs.length, "Il devrait y avoir 7 constantes dans l'énumération Couleur");
     }
 
+    /**
+     * Teste la méthode valueOf de l'énumération.
+     * Vérifie que la méthode valueOf convertit correctement les chaînes en constantes de couleur.
+     */
     @Test
     @DisplayName("Test de la méthode valueOf")
     void testValueOf() {
@@ -36,6 +66,11 @@ public class CouleurTest {
         assertEquals(Couleur.BLEU, Couleur.valueOf("BLEU"), "La méthode valueOf devrait retourner BLEU pour 'BLEU'");
     }
 
+    /**
+     * Teste les noms des constantes de couleur.
+     * Vérifie que chaque constante a le nom correct en majuscules :
+     * - ROUGE, ORANGE, BLEU, VERT, JAUNE, CYAN, VIOLET
+     */
     @Test
     @DisplayName("Test des noms des constantes")
     void testNomsDesConstantes() {

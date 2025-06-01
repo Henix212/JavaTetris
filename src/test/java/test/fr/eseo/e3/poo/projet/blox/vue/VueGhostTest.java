@@ -18,20 +18,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de test unitaire pour VueGhost.
- * Ce test s'assure que la pièce "fantôme" est bien générée (via clone + descente)
- * et que sa couleur est bien rendue avec transparence.
+ * Cette classe teste le comportement de la vue fantôme d'une pièce dans Tetris.
+ * Les tests vérifient :
+ * - La création correcte d'une copie de la pièce
+ * - Le positionnement automatique au point d'atterrissage
+ * - L'application correcte de la transparence sur les couleurs
+ *
+ * @author Hugo
  */
 public class VueGhostTest {
 
-    /** Pièce d'origine utilisée pour générer la ghost piece. */
+    /** Pièce d'origine utilisée pour générer la ghost piece */
     private Piece piece;
-    /** VueGhost à tester, créée à partir de la pièce d'origine. */
+    /** VueGhost à tester, créée à partir de la pièce d'origine */
     private VueGhost vueGhost;
-    /** Puits de jeu utilisé pour placer la pièce. */
+    /** Puits de jeu utilisé pour placer la pièce */
     private Puits puits;
 
     /**
-     * Initialise un puits avec une pièce ITetromino et une instance VueGhost avant chaque test.
+     * Initialise l'environnement de test avant chaque méthode de test.
+     * Crée un puits vide, une pièce I et sa vue fantôme associée.
      */
     @BeforeEach
     public void setUp() {
@@ -48,16 +54,13 @@ public class VueGhostTest {
     }
 
     /**
-     * Teste que la VueGhost contient bien une pièce fantôme distincte de l'originale.
-     * <p>
-     * Utilise la réflexion pour accéder à l'attribut protégé "piece" dans VuePiece.
-     * </p>
-     * 
-     * Le type {@link java.lang.reflect.Field Field} de Java permet d'accéder à des champs privés ou protégés
-     * d'une classe par réflexion. Voir :
-     * <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html">Java Field API</a>
+     * Teste la création correcte d'une pièce fantôme.
+     * Vérifie que :
+     * - Une pièce fantôme est bien créée
+     * - C'est une copie distincte de la pièce originale
+     * - Elle est correctement positionnée au point d'atterrissage
      *
-     * @throws Exception en cas d'accès/reflexion impossible
+     * @throws Exception si l'accès par réflexion échoue
      */
     @Test
     public void testConstructorCreatesGhostPiece() throws Exception {
@@ -73,12 +76,12 @@ public class VueGhostTest {
     }
 
     /**
-     * Vérifie que la couleur d'affichage de la pièce ghost est correcte (même RGB + alpha 80).
-     * <p>
-     * Utilise la réflexion pour appeler la méthode protégée getCouleurAffichage.
-     * </p>
+     * Teste l'application correcte de la transparence sur les couleurs.
+     * Vérifie que :
+     * - Les composantes RGB restent identiques à la pièce originale
+     * - La composante alpha est fixée à 80 pour la transparence
      *
-     * @throws Exception en cas d'accès/reflexion impossible
+     * @throws Exception si l'accès par réflexion échoue
      */
     @Test
     public void testGetCouleurAffichageAlpha() throws Exception {

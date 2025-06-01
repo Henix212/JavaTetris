@@ -12,11 +12,28 @@ import java.beans.PropertyChangeEvent;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Classe de test unitaire pour VuePuits.
+ * Cette classe teste le comportement de la vue principale du jeu Tetris.
+ * Les tests vérifient :
+ * - L'initialisation correcte de la vue
+ * - Les getters et setters
+ * - La gestion des événements de changement de propriété
+ * - Le comportement avec différentes tailles de cases
+ *
+ * @author Hugo
+ */
 public class VuePuitsTest {
 
+    /** Le puits mocké utilisé pour les tests */
     private Puits puits;
+    /** La vue du puits à tester */
     private VuePuits vuePuits;
 
+    /**
+     * Initialise l'environnement de test avant chaque méthode de test.
+     * Crée un puits mocké avec des dimensions prédéfinies et sa vue associée.
+     */
     @BeforeEach
     void setUp() {
         puits = mock(Puits.class); // Utilisation de Mockito pour simuler un Puits
@@ -25,6 +42,14 @@ public class VuePuitsTest {
         vuePuits = new VuePuits(puits, 30); 
     }
 
+    /**
+     * Teste le constructeur de VuePuits.
+     * Vérifie que :
+     * - La vue est correctement initialisée
+     * - La taille des cases est correcte
+     * - Le puits est correctement associé
+     * - Le constructeur par défaut fonctionne aussi
+     */
     @Test
     @DisplayName("Test du constructeur")
     void testConstructor() {
@@ -39,6 +64,12 @@ public class VuePuitsTest {
         assertEquals(30, VuePuitsBasic.getTaille(), "La taille des cases devrait être 30" );
     }
 
+    /**
+     * Teste les getters et setters de VuePuits.
+     * Vérifie que :
+     * - La taille des cases peut être modifiée
+     * - Le puits associé peut être changé
+     */
     @Test
     @DisplayName("Test des getters et setters")
     void testGettersAndSetters() {
@@ -50,6 +81,10 @@ public class VuePuitsTest {
         assertEquals(nouveauPuits, vuePuits.getPuits(), "Le puits associé devrait être mis à jour");
     }
 
+    /**
+     * Teste la gestion des événements de changement de pièce actuelle.
+     * Vérifie que la vue réagit correctement à un changement de pièce.
+     */
     @Test
     @DisplayName("Test de la gestion des PropertyChangeEvents")
     void testPropertyChange() {
@@ -57,6 +92,10 @@ public class VuePuitsTest {
         assertDoesNotThrow(() -> vuePuits.propertyChange(event), "La méthode propertyChange ne devrait pas lever d'exception");
     }
 
+    /**
+     * Teste la gestion des événements de propriété non pertinents.
+     * Vérifie que la vue ignore correctement les événements non liés à la pièce actuelle.
+     */
     @Test
     @DisplayName("Test de la gestion des PropertyChangeEvents")
     void testPropertyChangeNotgoodEvent() {

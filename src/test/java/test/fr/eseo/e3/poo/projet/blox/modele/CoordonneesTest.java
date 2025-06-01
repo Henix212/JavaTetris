@@ -7,14 +7,35 @@ import src.fr.eseo.e3.poo.projet.blox.modele.Coordonnees;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour Coordonnees.
+ * Cette classe teste le comportement des coordonnées dans le jeu Tetris.
+ * Les tests vérifient :
+ * - La création et l'initialisation des coordonnées
+ * - Les getters et setters pour l'abscisse et l'ordonnée
+ * - La représentation textuelle des coordonnées
+ * - L'égalité et le hashcode des coordonnées
+ * - La gestion des valeurs négatives
+ *
+ * @author Hugo
+ */
 public class CoordonneesTest {
 
+    /** Première coordonnée de test (5,10) */
     private Coordonnees coord1;
+    /** Deuxième coordonnée de test (5,10) - identique à coord1 */
     private Coordonnees coord2;
+    /** Troisième coordonnée de test (7,14) - différente de coord1 */
     private Coordonnees coord3;
+    /** Quatrième coordonnée de test (2,10) - même ordonnée que coord1 */
     private Coordonnees coord4;
+    /** Cinquième coordonnée de test (5,2) - même abscisse que coord1 */
     private Coordonnees coord5;
 
+    /**
+     * Initialise l'environnement de test avant chaque méthode.
+     * Crée cinq coordonnées différentes pour tester les comparaisons.
+     */
     @BeforeEach
     void setUp() {
         coord1 = new Coordonnees(5, 10);
@@ -24,6 +45,10 @@ public class CoordonneesTest {
         coord5 = new Coordonnees(5, 2);
     }
 
+    /**
+     * Teste le constructeur de Coordonnees.
+     * Vérifie que les coordonnées sont correctement initialisées.
+     */
     @Test
     @DisplayName("Test du constructeur")
     void testConstructor() {
@@ -31,6 +56,10 @@ public class CoordonneesTest {
         assertEquals(10, coord1.getOrdonnee(), "L'ordonnée devrait être 10");
     }
 
+    /**
+     * Teste les méthodes setter de Coordonnees.
+     * Vérifie que les coordonnées peuvent être modifiées correctement.
+     */
     @Test
     @DisplayName("Test de des méthodes des Setters")
     void testSetters() {
@@ -40,12 +69,24 @@ public class CoordonneesTest {
         assertEquals(12, coord1.getOrdonnee(), "L'ordonnée devrait être 12 après modification");
     }
 
+    /**
+     * Teste la méthode toString de Coordonnees.
+     * Vérifie que la représentation textuelle est au format "(x, y)".
+     */
     @Test
     @DisplayName("Test de la méthode toString")
     void testToString() {
         assertEquals("(5, 10)", coord1.toString(), "La méthode toString devrait retourner '(5, 10)'");
     }
 
+    /**
+     * Teste la méthode equals de Coordonnees.
+     * Vérifie que :
+     * - Deux coordonnées identiques sont égales
+     * - Une coordonnée est égale à elle-même
+     * - Des coordonnées différentes ne sont pas égales
+     * - Une coordonnée n'est pas égale à null ou à un autre type d'objet
+     */
     @Test
     @DisplayName("Test de la méthode equals")
     void testEquals() {
@@ -60,6 +101,12 @@ public class CoordonneesTest {
         assertNotEquals(coord1, "String", "Une coordonnée ne devrait pas être égale à un objet d'un autre type");
     }
 
+    /**
+     * Teste la méthode hashCode de Coordonnees.
+     * Vérifie que :
+     * - Des coordonnées identiques ont le même hashCode
+     * - Des coordonnées différentes ont des hashCode différents
+     */
     @Test
     @DisplayName("Test de la méthode hashCode")
     void testHashCode() {
@@ -67,6 +114,10 @@ public class CoordonneesTest {
         assertNotEquals(coord1.hashCode(), coord3.hashCode(), "Les hashCodes ne devraient pas être égaux pour des coordonnées différentes");
     }
 
+    /**
+     * Teste les méthodes getter de Coordonnees.
+     * Vérifie que les valeurs initiales sont correctement récupérées.
+     */
     @Test
     @DisplayName("Test des getters")
     void testGetters() {
@@ -74,6 +125,10 @@ public class CoordonneesTest {
         assertEquals(10, coord1.getOrdonnee(), "Le getter pour l'ordonnée devrait retourner 10");
     }
 
+    /**
+     * Teste les méthodes setter avec des valeurs négatives.
+     * Vérifie que les coordonnées peuvent être modifiées avec des valeurs négatives.
+     */
     @Test
     @DisplayName("Test de la méthode setters avec des valeurs négatives")
     void testSettersWithNegativeValues() {

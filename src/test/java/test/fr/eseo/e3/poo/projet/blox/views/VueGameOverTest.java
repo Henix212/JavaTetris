@@ -11,10 +11,23 @@ import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour VueGameOver.
+ * Cette classe teste l'interface de fin de partie du jeu Tetris.
+ * Les tests vérifient la présence et le bon fonctionnement des composants
+ * de l'interface (titre, score, boutons) ainsi que la mise à jour du score.
+ *
+ * @author Hugo
+ */
 public class VueGameOverTest {
 
+    /** Vue de fin de partie à tester */
     private VueGameOver vue;
 
+    /**
+     * Initialise l'environnement de test avant chaque méthode.
+     * Crée une nouvelle fenêtre, un routeur et une vue de fin de partie.
+     */
     @BeforeEach
     public void setUp() {
         JFrame frame = new JFrame();
@@ -23,13 +36,23 @@ public class VueGameOverTest {
         vue = new VueGameOver(routeur);
     }
 
+    /**
+     * Teste la présence et l'affichage correct de tous les composants de l'interface.
+     * Vérifie que :
+     * - Le titre "Game Over" est présent
+     * - Le label de score est présent avec la bonne taille de police
+     * - Le bouton "Rejouer" est présent
+     * - Le bouton "Quitter" est présent
+     */
     @Test
     public void testComposantsAffiches() {
+        // Variables pour suivre la présence des composants
         boolean contientTitre = false;
         boolean contientScore = false;
         boolean contientBoutonRejouer = false;
         boolean contientBoutonQuitter = false;
 
+        // Parcours de tous les composants pour vérifier leur présence
         for (Component comp : vue.getComponents()) {
             if (comp instanceof JLabel) {
                 JLabel label = (JLabel) comp;
@@ -43,17 +66,29 @@ public class VueGameOverTest {
             }
         }
 
+        // Vérification de la présence de tous les composants
         assertTrue(contientTitre, "Le titre 'Game Over' est absent.");
         assertTrue(contientScore, "Le label de score est absent.");
         assertTrue(contientBoutonRejouer, "Le bouton 'Rejouer' est absent.");
         assertTrue(contientBoutonQuitter, "Le bouton 'Quitter' est absent.");
     }
 
+    /**
+     * Teste la mise à jour et l'affichage du score.
+     * Vérifie que :
+     * - Le score est réinitialisé
+     * - Un nouveau score est ajouté
+     * - La vue est mise à jour
+     * - Le score est correctement affiché dans l'interface
+     */
     @Test
     public void testUpdateScore() {
+        // Réinitialisation et ajout d'un score
         Globals.score.reset();
         Globals.score.ajouter(100);
         vue.updateScore();
+
+        // Vérification de l'affichage du score
         boolean contientScore = false;
         for (Component comp : vue.getComponents()) {
             if (comp instanceof JLabel) {

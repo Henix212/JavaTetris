@@ -8,14 +8,36 @@ import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.Tetromino;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Classe de test unitaire pour UsineDePiece.
+ * Cette classe teste le comportement de la fabrique de pièces du jeu Tetris.
+ * Les tests vérifient :
+ * - La génération de pièces en mode aléatoire simple
+ * - La génération de pièces en mode cyclique
+ * - La génération de pièces en mode aléatoire complet
+ * - La gestion des modes invalides
+ *
+ * @author Hugo
+ */
 public class UsineDePieceTest {
 
+    /**
+     * Initialise l'environnement de test avant chaque méthode.
+     * Réinitialise le mode de génération à ALEATOIRE_PIECE.
+     */
     @BeforeEach
     void setUp() {
         // Réinitialiser les modes avant chaque test
         UsineDePiece.setMode(0); // Mode par défaut : ALEATOIRE_PIECE
     }
 
+    /**
+     * Teste le mode de génération aléatoire simple.
+     * Vérifie que :
+     * - Les pièces générées ne sont pas nulles
+     * - Les pièces sont des instances de Tetromino
+     * - Plusieurs pièces peuvent être générées successivement
+     */
     @Test
     @DisplayName("Test du mode ALEATOIRE_PIECE")
     void testModeAleatoirePiece() {
@@ -32,6 +54,13 @@ public class UsineDePieceTest {
         assertTrue(piece3 instanceof Tetromino, "La pièce générée devrait être une instance de Tetromino");
     }
 
+    /**
+     * Teste le mode de génération cyclique.
+     * Vérifie que :
+     * - Les pièces générées ne sont pas nulles
+     * - Les pièces successives sont différentes
+     * - Le cycle de génération fonctionne correctement
+     */
     @Test
     @DisplayName("Test du mode CYCLIC")
     void testModeCyclic() {
@@ -44,6 +73,14 @@ public class UsineDePieceTest {
         assertNotEquals(piece1, piece2, "Les pièces générées en mode CYCLIC devraient être différentes");
     }
 
+    /**
+     * Teste le mode de génération aléatoire complet.
+     * Vérifie que :
+     * - Les pièces générées ne sont pas nulles
+     * - Les pièces sont des instances de Tetromino
+     * - Les pièces successives sont différentes
+     * - La distribution aléatoire est équilibrée
+     */
     @Test
     @DisplayName("Test du mode ALEATOIRE_COMPLET")
     void testModeAleatoireComplet() {
@@ -58,6 +95,12 @@ public class UsineDePieceTest {
         assertNotEquals(piece1, piece2, "Les pièces générées en mode ALEATOIRE_COMPLET devraient être différentes");
     }
 
+    /**
+     * Teste la gestion des modes invalides.
+     * Vérifie que :
+     * - Une exception est levée pour un mode supérieur au maximum
+     * - Une exception est levée pour un mode négatif
+     */
     @Test
     @DisplayName("Test des exceptions pour les modes invalides")
     void testInvalidMode() {
