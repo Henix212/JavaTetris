@@ -40,7 +40,6 @@ public class VueJeux extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Score en haut, centré
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -48,7 +47,6 @@ public class VueJeux extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(scoreLabel, gbc);
 
-        // Terrain centré en dessous
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -66,19 +64,6 @@ public class VueJeux extends JPanel {
         });
     }
 
-    public void gameReset() {
-        Globals.score.reset();
-
-        puits.reset();
-        puits.setPieceSuivante(UsineDePiece.genererTetromino());
-        puits.setPieceSuivante(UsineDePiece.genererTetromino());
-
-        vuePuits.setPuits(puits);
-        vuePuits.requestFocusInWindow();
-
-        updateScore();
-    }
-
     public void updateScore() {
         scoreLabel.setText("Score : " + Globals.score.getScore());
     }
@@ -93,5 +78,45 @@ public class VueJeux extends JPanel {
 
     public VuePuits getVuePuits() {
         return vuePuits;
+    }
+
+    public void gameReset() {
+        Globals.score.reset();
+        
+        puits.reset();
+
+        UsineDePiece.setMode(0);
+        Piece piece1 = UsineDePiece.genererTetromino();
+        Piece piece2 = UsineDePiece.genererTetromino();
+        puits.setPieceSuivante(piece1);
+        puits.setPieceSuivante(piece2);
+
+        this.tas = puits.getTas();
+
+        vuePuits.arreterGravite();
+        this.vuePuits = new VuePuits(puits, 30);
+
+        this.removeAll();
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.add(scoreLabel, gbc);
+
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        this.add(vuePuits, gbc);
+
+        vuePuits.demarrerGravite();
+        vuePuits.setFocusable(true);
+        SwingUtilities.invokeLater(() -> vuePuits.requestFocusInWindow());
+
+        updateScore();
+
+        this.revalidate();
+        this.repaint();
     }
 }
