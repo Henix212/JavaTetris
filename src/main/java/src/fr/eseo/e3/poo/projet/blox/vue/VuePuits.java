@@ -43,7 +43,7 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
 
