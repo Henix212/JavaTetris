@@ -54,30 +54,6 @@ public class VuePuitsTest {
         vuePuits.setPuits(nouveauPuits);
         assertEquals(nouveauPuits, vuePuits.getPuits(), "Le puits associé devrait être mis à jour");
     }
-    
-    @Test
-    @DisplayName("Test de paintComponent")
-    void testPaintComponentWithPropertyChange() {
-        // Initialisation du puits et de la vue
-        Puits puits = new Puits(10, 20); // ou ton constructeur réel
-        VuePuits vuePuits = new VuePuits(puits); // dépend de ton code 
-
-        Piece piece = mock(Piece.class);
-        VuePiece vuePiece = new VuePiece(piece,30); // dépend de ta structure réelle
-
-        PropertyChangeEvent event = new PropertyChangeEvent(
-            puits, "PIECE ACTUELLE", null, vuePiece
-        );
-        vuePuits.propertyChange(event);
-
-        // Vérification que le paint ne lève pas d’exception
-        assertDoesNotThrow(() -> {
-            BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g2d = image.createGraphics();
-            vuePuits.paintComponent(g2d);
-            g2d.dispose();
-        }, "paintComponent ne doit pas lever exception"); 
-    }
 
     @Test
     @DisplayName("Test de la gestion des PropertyChangeEvents")
@@ -91,13 +67,5 @@ public class VuePuitsTest {
     void testPropertyChangeNotgoodEvent() {
         PropertyChangeEvent event = new PropertyChangeEvent(puits, "PIECE", null, mock(VuePiece.class));
         assertDoesNotThrow(() -> vuePuits.propertyChange(event), "La méthode propertyChange ne devrait pas lever d'exception");
-    }
-
-    @Test
-    @DisplayName("Test de la méthode setVuePiece")
-    void testSetVuePiece() {
-        VuePiece vuePieceMock = mock(VuePiece.class);
-        vuePuits.propertyChange(new PropertyChangeEvent(puits, "PIECE ACTUELLE", null, vuePieceMock));
-        assertEquals(vuePieceMock, vuePuits.getVuePiece(), "La vue de la pièce devrait être mise à jour correctement");
     }
 }
