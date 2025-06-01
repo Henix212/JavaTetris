@@ -26,17 +26,14 @@ public abstract class Tetromino implements Piece {
             int nouvelleAbscisse = element.getCoordonnees().getAbscisse() + deltaX;
             int nouvelleOrdonnee = element.getCoordonnees().getOrdonnee() + deltaY;
 
-            // Vérification des collisions avec le fond du puits
             if (nouvelleOrdonnee >= puits.getProfondeur()) {
                 throw new BloxException("Collision avec le fond du puits", BloxException.BLOX_COLLISION);
             }
 
-            // Vérification de dépassement latéral (sortie du puits)
             if (nouvelleAbscisse < 0 || nouvelleAbscisse >= puits.getLargeur()) {
                 throw new BloxException("Sortie latérale du puits", BloxException.BLOX_SORTIE_PUITS);
             }
 
-            // Vérification de collision avec des éléments du tas
             for (Element e : puits.getTas().getElements()) {
                 if (e.getCoordonnees().equals(new Coordonnees(nouvelleAbscisse, nouvelleOrdonnee))) {
                     throw new BloxException("Collision avec un élément du tas", BloxException.BLOX_COLLISION);
@@ -44,7 +41,6 @@ public abstract class Tetromino implements Piece {
             }
         }
 
-        // Si tout est OK, déplacer les éléments
         for (Element element : elements) {
             element.deplacerDe(deltaX, deltaY);
         }
