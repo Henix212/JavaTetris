@@ -73,8 +73,9 @@ public class VueJeux extends JPanel {
         puits.setPieceSuivante(UsineDePiece.genererTetromino());
         puits.setPieceSuivante(UsineDePiece.genererTetromino());
 
+        vuePuits.setPuits(puits);
         vuePuits.requestFocusInWindow();
-        
+
         updateScore();
     }
 
