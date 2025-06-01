@@ -9,7 +9,6 @@ import src.fr.eseo.e3.poo.projet.blox.modele.pieces.tetrominos.OTetromino;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePieceSuivante;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 import static org.junit.jupiter.api.Assertions.*;
 

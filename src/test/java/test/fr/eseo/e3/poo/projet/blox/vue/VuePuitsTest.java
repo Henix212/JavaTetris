@@ -4,14 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import src.fr.eseo.e3.poo.projet.blox.modele.Puits;
-import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePiece;
-import java.awt.image.BufferedImage;
 
-
-import javax.swing.*;
-import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
