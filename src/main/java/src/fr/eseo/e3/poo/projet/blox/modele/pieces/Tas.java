@@ -12,6 +12,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
 
 import src.fr.eseo.e3.poo.projet.blox.utils.Globals;
+import src.fr.eseo.e3.poo.projet.blox.views.VueGameOver;
 
 
 public class Tas {
@@ -69,6 +70,8 @@ public class Tas {
     public void ajouterElements(Piece piece) {
         this.elements.addAll(piece.getElements());
         if (isGameOver()){
+            VueGameOver gameOverView = (VueGameOver) Globals.routeur.getVue("GAMEOVER");
+            gameOverView.updateScore();
             Globals.routeur.afficherVue("GAMEOVER");
         }
     }
@@ -135,6 +138,10 @@ public class Tas {
         if (lignesSupprimees > 0) {
             Globals.score.ajouter(lignesSupprimees * 100);
         }   
+    }
+
+    public void clear() {
+        this.elements.clear();
     }
 }
 

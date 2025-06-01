@@ -107,4 +107,12 @@ public class Puits  {
         this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE, this.pieceSuivante, pieceSuivante);
         this.pieceSuivante = pieceSuivante;
     }
+
+    public void reset() {
+        this.pieceActuelle = null;
+        this.pieceSuivante = null;
+        if (this.tas != null) {
+            this.tas.clear();
+        }
+    }
 }

@@ -12,9 +12,9 @@ import java.awt.*;
 
 public class VueJeux extends JPanel {
 
-    private final Puits puits;
-    private final Tas tas;
-    private final VuePuits vuePuits;
+    private Puits puits;
+    private Tas tas;
+    private VuePuits vuePuits;
     private final JLabel scoreLabel;
 
     public VueJeux() {
@@ -64,6 +64,18 @@ public class VueJeux extends JPanel {
                 updateScore();
             }
         });
+    }
+
+    public void gameReset() {
+        Globals.score.reset();
+
+        puits.reset();
+        puits.setPieceSuivante(UsineDePiece.genererTetromino());
+        puits.setPieceSuivante(UsineDePiece.genererTetromino());
+
+        vuePuits.requestFocusInWindow();
+        
+        updateScore();
     }
 
     public void updateScore() {
