@@ -4,6 +4,7 @@ import src.fr.eseo.e3.poo.projet.blox.modele.Puits;
 import src.fr.eseo.e3.poo.projet.blox.modele.UsineDePiece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Tas;
+import src.fr.eseo.e3.poo.projet.blox.vue.VuePieceSuivante;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import src.fr.eseo.e3.poo.projet.blox.utils.Globals;
 
@@ -16,6 +17,7 @@ public class VueJeux extends JPanel {
     private Tas tas;
     private VuePuits vuePuits;
     private final JLabel scoreLabel;
+    private VuePieceSuivante vuePieceSuivante;
 
     public VueJeux() {
         this.puits = new Puits();
@@ -30,7 +32,6 @@ public class VueJeux extends JPanel {
 
         this.vuePuits = new VuePuits(puits, 30);
 
-        // Score label centré
         scoreLabel = new JLabel("Score : " + Globals.score.getScore(), SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         scoreLabel.setForeground(Color.WHITE);
@@ -39,6 +40,19 @@ public class VueJeux extends JPanel {
         setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
+
+        this.vuePieceSuivante = new VuePieceSuivante(puits);
+
+        JPanel panneauPieceSuivante = new JPanel(new BorderLayout());
+        panneauPieceSuivante.setOpaque(false);
+        panneauPieceSuivante.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        panneauPieceSuivante.add(vuePieceSuivante, BorderLayout.CENTER);
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(panneauPieceSuivante, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -62,6 +76,12 @@ public class VueJeux extends JPanel {
                 updateScore();
             }
         });
+
+        vuePieceSuivante.addPropertyChangeListener(event -> {
+            if ("PIECE SUIVANTE".equals(event.getPropertyName())) {
+                updateNextPiece();
+            }
+        });
     }
 
     public void updateScore() {
@@ -78,6 +98,10 @@ public class VueJeux extends JPanel {
 
     public VuePuits getVuePuits() {
         return vuePuits;
+    }
+
+    public void updateNextPiece() {
+        vuePieceSuivante.repaint();
     }
 
     public void gameReset() {
@@ -99,6 +123,17 @@ public class VueJeux extends JPanel {
         this.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
 
+        JPanel panneauPieceSuivante = new JPanel(new BorderLayout());
+        panneauPieceSuivante.setOpaque(false);
+        panneauPieceSuivante.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        panneauPieceSuivante.add(vuePieceSuivante, BorderLayout.CENTER);
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(panneauPieceSuivante, gbc);
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -115,8 +150,11 @@ public class VueJeux extends JPanel {
         SwingUtilities.invokeLater(() -> vuePuits.requestFocusInWindow());
 
         updateScore();
+        updateNextPiece();
 
         this.revalidate();
         this.repaint();
+
+        vuePieceSuivante.repaint();
     }
 }
