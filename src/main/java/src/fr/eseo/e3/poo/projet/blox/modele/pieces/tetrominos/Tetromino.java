@@ -53,7 +53,7 @@ public abstract class Tetromino implements Piece {
     @Override
     public void tourner(boolean sensHoraire) throws BloxException {
         if (this instanceof OTetromino) {
-            return; // Pas de rotation pour O-Tetromino
+            return; 
         }
 
         int refX = elements[0].getCoordonnees().getAbscisse();

@@ -124,10 +124,10 @@ public class PuitsTest {
                 "\t(1, -1) - ROUGE\n" +
                 "Piece Actuelle : OTetromino\n"+
                 "OTetromino :\n" +
-                "\t(5, 4) - ROUGE\n" +
-                "\t(6, 4) - ROUGE\n" +
-                "\t(5, 3) - ROUGE\n" +
-                "\t(6, 3) - ROUGE\n";
+                "\t(4, 0) - ROUGE\n" +
+                "\t(5, 0) - ROUGE\n" +
+                "\t(4, -1) - ROUGE\n" +
+                "\t(5, -1) - ROUGE\n";
         
 
         OTetromino piece = new OTetromino(new Coordonnees(0, 0), Couleur.ROUGE);

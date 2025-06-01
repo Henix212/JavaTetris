@@ -43,43 +43,36 @@ public class VuePuits extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g.create();
 
-        // Dessiner la grille du puits
         float largeurCase = (float) this.getWidth() / puits.getLargeur();
         float hauteurCase = (float) this.getHeight() / puits.getProfondeur();
 
-        // Dessiner les lignes horizontales
         for (int i = 0; i <= puits.getProfondeur(); i++) {
             int y = Math.round(i * hauteurCase);
             g2D.drawLine(0, y, this.getWidth(), y);
         }
 
-        // Dessiner les lignes verticales
         for (int i = 0; i <= puits.getLargeur(); i++) {
             int x = Math.round(i * largeurCase);
             g2D.drawLine(x, 0, x, this.getHeight());
         }
 
-        // Dessiner les éléments du tas
         for (Element elt : puits.getTas().getElements()) {
             int x = Math.round(elt.getCoordonnees().getAbscisse() * largeurCase);
             int y = Math.round(elt.getCoordonnees().getOrdonnee() * hauteurCase);
             int w = Math.round(largeurCase);
             int h = Math.round(hauteurCase);
 
-            // Remplissage
             g2D.setColor(elt.getCouleur().getCouleurPourAffichage());
             g2D.fill3DRect(x, y, w, h, false);
 
-            // Contour noir
             g2D.setColor(Color.BLACK);
             g2D.drawRect(x, y, w, h);
         }
 
-        // DESSINER LE GHOST AVANT LA PIECE ACTUELLE
         Piece piece = puits.getPieceActuelle();
         if (piece != null) {
             VueGhost vueGhost = new VueGhost(piece, this.taille);

@@ -4,8 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import src.fr.eseo.e3.poo.projet.blox.modele.Puits;
+import src.fr.eseo.e3.poo.projet.blox.modele.pieces.Piece;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePuits;
 import src.fr.eseo.e3.poo.projet.blox.vue.VuePiece;
+import java.awt.image.BufferedImage;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,40 +54,29 @@ public class VuePuitsTest {
         vuePuits.setPuits(nouveauPuits);
         assertEquals(nouveauPuits, vuePuits.getPuits(), "Le puits associé devrait être mis à jour");
     }
-
+    
     @Test
-    @DisplayName("Test de la méthode paintComponent")
-    void testPaintComponent() {
-        JPanel panel = new JPanel();
-        panel.add(vuePuits);
-        JFrame frame = new JFrame();
-        frame.add(panel);
-        frame.pack();
+    @DisplayName("Test de paintComponent")
+    void testPaintComponentWithPropertyChange() {
+        // Initialisation du puits et de la vue
+        Puits puits = new Puits(10, 20); // ou ton constructeur réel
+        VuePuits vuePuits = new VuePuits(puits); // dépend de ton code 
 
-        // Simulez un appel de peinture
-        assertDoesNotThrow(() -> {
-            Graphics graphics = panel.getGraphics();
-            vuePuits.paint(graphics);
-        }, "La méthode paint ne devrait pas lever d'exception");
-    }
+        Piece piece = mock(Piece.class);
+        VuePiece vuePiece = new VuePiece(piece,30); // dépend de ta structure réelle
 
-    @Test
-    @DisplayName("Test de la méthode paintComponent")
-    void testPaintComponentWithVuePiece() {
-        JPanel panel = new JPanel();
-        panel.add(vuePuits);
-        JFrame frame = new JFrame();
-        frame.add(panel);
-        frame.pack();
-
-        VuePiece vuePieceMock = mock(VuePiece.class);
-        PropertyChangeEvent event = new PropertyChangeEvent(puits, "PIECE ACTUELLE", null, vuePieceMock);
+        PropertyChangeEvent event = new PropertyChangeEvent(
+            puits, "PIECE ACTUELLE", null, vuePiece
+        );
         vuePuits.propertyChange(event);
 
+        // Vérification que le paint ne lève pas d’exception
         assertDoesNotThrow(() -> {
-            Graphics graphics = panel.getGraphics();
-            vuePuits.paint(graphics);
-        }, "La méthode paint ne devrait pas lever d'exception");
+            BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = image.createGraphics();
+            vuePuits.paintComponent(g2d);
+            g2d.dispose();
+        }, "paintComponent ne doit pas lever exception"); 
     }
 
     @Test

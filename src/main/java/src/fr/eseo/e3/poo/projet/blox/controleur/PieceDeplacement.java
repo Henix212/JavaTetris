@@ -21,7 +21,7 @@ public class PieceDeplacement extends ControllAdaptateur  {
     @Override
     public void mouseWheelMoved(MouseWheelEvent event){
         if (this.puits.getPieceActuelle() == null){
-            return;
+            throw new NullPointerException("Aucune pièce actuelle à déplacer.");
         }
 
         if (event.getWheelRotation() > 0){
@@ -41,7 +41,7 @@ public class PieceDeplacement extends ControllAdaptateur  {
     @Override
     public void mouseMoved(MouseEvent event) {
         if (this.puits.getPieceActuelle() == null) {
-            return;
+            throw new NullPointerException("Aucune pièce actuelle à déplacer.");
         }
 
         int cibleCol = (int) (event.getX() / this.vuePuits.getTaille());
@@ -54,8 +54,8 @@ public class PieceDeplacement extends ControllAdaptateur  {
             try {
                 this.puits.getPieceActuelle().deplacerDe(direction, 0);
                 delta -= direction;
-            } catch (Exception e) {
-                break; // Arrête si collision
+            } catch (BloxException e) {
+                break; 
             }
         }
         this.vuePuits.repaint();
@@ -63,6 +63,10 @@ public class PieceDeplacement extends ControllAdaptateur  {
 
     @Override
     public void keyPressed(java.awt.event.KeyEvent e) {
+        if (this.puits.getPieceActuelle() == null) {
+            throw new NullPointerException("Aucune pièce actuelle à déplacer.");
+        }
+        
         if (e.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT) {
             try { puits.getPieceActuelle().deplacerDe(-1, 0); } catch (Exception ex) {}
             vuePuits.repaint();
@@ -87,7 +91,6 @@ public class PieceDeplacement extends ControllAdaptateur  {
                     puits.getPieceActuelle().deplacerDe(0, 1);
                 }
             } catch (Exception ex) {
-                // Collision détectée, on fixe la pièce
                 puits.getTas().ajouterElements(puits.getPieceActuelle());
                 puits.getTas().supprimerLignesCompletes();
                 this.puits.setPieceSuivante(UsineDePiece.genererTetromino());
