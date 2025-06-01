@@ -27,6 +27,9 @@ public class Puits  {
     /** Nom de la propriété pour la modification de la pièce suivante */
     public static final String MODIFICATION_PIECE_SUIVANTE = "PIECE SUIVANTE";
     
+    /** Nom de la propriété pour la modification de la pièce en réserve */
+    public static final String MODIFICATION_PIECE_RESERVE = "PIECE RESERVE";
+    
     /** Largeur actuelle du puits */
     private int largeur;
     
@@ -38,6 +41,12 @@ public class Puits  {
     
     /** Prochaine pièce à jouer */
     private Piece pieceSuivante;
+    
+    /** Pièce en réserve */
+    private Piece pieceReserve;
+    
+    /** Indique si la pièce actuelle a déjà été mise en réserve */
+    private boolean pieceActuelleDejaReservee;
     
     /** Support pour la gestion des événements de propriété */
     private final PropertyChangeSupport pcs;
@@ -165,6 +174,15 @@ public class Puits  {
     }
 
     /**
+     * Retourne la pièce en réserve.
+     *
+     * @return La pièce en réserve
+     */
+    public Piece getPieceReserve() {
+        return this.pieceReserve;
+    }
+
+    /**
      * Définit la largeur du puits.
      *
      * @param largeur La nouvelle largeur (entre 5 et 15)
@@ -203,10 +221,51 @@ public class Puits  {
             this.pieceSuivante.setPosition((this.largeur / 2) - 1, 0);
             this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE, this.pieceActuelle, this.pieceSuivante);
             this.pieceActuelle = this.pieceSuivante;
+            // Réinitialise le flag de réserve pour la nouvelle pièce
+            this.pieceActuelleDejaReservee = false;
         }
         pieceSuivante.setPuits(this);
         this.pcs.firePropertyChange(MODIFICATION_PIECE_SUIVANTE, this.pieceSuivante, pieceSuivante);
         this.pieceSuivante = pieceSuivante;
+    }
+
+    /**
+     * Échange la pièce actuelle avec la pièce en réserve.
+     * Si aucune pièce n'est en réserve, la pièce actuelle est mise en réserve
+     * et la pièce suivante devient la pièce actuelle.
+     * Ne peut être utilisé qu'une seule fois par pièce.
+     */
+    public void echangerPieceReserve() {
+        if (this.pieceActuelle == null || this.pieceActuelleDejaReservee) {
+            return;
+        }
+
+        Piece anciennePieceActuelle = this.pieceActuelle;
+        
+        if (this.pieceReserve == null) {
+            // Si pas de pièce en réserve, on met la pièce actuelle en réserve
+            this.pieceReserve = this.pieceActuelle;
+            // La pièce suivante devient la pièce actuelle
+            this.pieceActuelle = this.pieceSuivante;
+            // On génère une nouvelle pièce suivante
+            this.pieceSuivante = null; // À remplacer par la génération d'une nouvelle pièce
+        } else {
+            // Échange entre la pièce actuelle et la pièce en réserve
+            this.pieceActuelle = this.pieceReserve;
+            this.pieceReserve = anciennePieceActuelle;
+        }
+
+        // Positionne la nouvelle pièce actuelle en haut du puits
+        if (this.pieceActuelle != null) {
+            this.pieceActuelle.setPosition((this.largeur / 2) - 1, 0);
+        }
+
+        // Marque la nouvelle pièce actuelle comme pouvant être mise en réserve
+        this.pieceActuelleDejaReservee = false;
+
+        // Notifie les changements
+        this.pcs.firePropertyChange(MODIFICATION_PIECE_ACTUELLE, anciennePieceActuelle, this.pieceActuelle);
+        this.pcs.firePropertyChange(MODIFICATION_PIECE_RESERVE, null, this.pieceReserve);
     }
 
     /**

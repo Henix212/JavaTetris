@@ -62,6 +62,7 @@ public class PieceRotation extends ControllAdaptateur {
     /**
      * Gère les événements de pression de touche pour la rotation des pièces.
      * La flèche haut déclenche une rotation horaire.
+     * La touche C échange la pièce actuelle avec la pièce en réserve.
      * La vue est rafraîchie après chaque rotation.
      *
      * @param e L'événement de clavier déclenché
@@ -70,6 +71,9 @@ public class PieceRotation extends ControllAdaptateur {
     public void keyPressed(java.awt.event.KeyEvent e) {
         if (e.getKeyCode() == java.awt.event.KeyEvent.VK_UP) {
             verifierEtTournerKey(e);
+            vuePuits.repaint();
+        } else if (e.getKeyCode() == java.awt.event.KeyEvent.VK_C) {
+            puits.echangerPieceReserve();
             vuePuits.repaint();
         }
     }
