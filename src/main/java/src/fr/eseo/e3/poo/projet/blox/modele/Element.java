@@ -2,34 +2,71 @@ package src.fr.eseo.e3.poo.projet.blox.modele;
 
 import java.util.Objects;
 
+/**
+ * Représente un élément du jeu Tetris.
+ * Un élément est l'unité de base qui compose les pièces du jeu.
+ * Chaque élément possède une position (coordonnées) et une couleur.
+ *
+ * @author Hugo
+ */
 public class Element {
+    /** La couleur de l'élément */
     private Couleur couleur;
+    
+    /** Les coordonnées de l'élément dans le puits */
     private Coordonnees coordonnes;
 
+    /**
+     * Constructeur d'un élément avec des coordonnées.
+     * Initialise l'élément avec les coordonnées spécifiées et la première couleur disponible.
+     *
+     * @param coordonnees Les coordonnées de l'élément
+     */
     public Element(Coordonnees coordonnees) {
         this.coordonnes = coordonnees;
         this.couleur = Couleur.values()[0];
     }
 
+    /**
+     * Constructeur d'un élément avec des coordonnées spécifiques.
+     * Initialise l'élément avec les coordonnées (x,y) spécifiées et la première couleur disponible.
+     *
+     * @param abcisse L'abscisse de l'élément
+     * @param ordonnee L'ordonnée de l'élément
+     */
     public Element(int abcisse, int ordonnee){
         this.coordonnes = new Coordonnees(abcisse, ordonnee);
         this.couleur = Couleur.values()[0];
     }
 
+    /**
+     * Constructeur d'un élément avec des coordonnées et une couleur.
+     * Initialise l'élément avec les coordonnées et la couleur spécifiées.
+     *
+     * @param coordonnees Les coordonnées de l'élément
+     * @param couleur La couleur de l'élément
+     */
     public Element(Coordonnees coordonnees, Couleur couleur){
         this.coordonnes = coordonnees;
         this.couleur = couleur;
     }
 
+    /**
+     * Déplace l'élément d'un certain nombre de cases horizontalement et verticalement.
+     * Crée de nouvelles coordonnées en ajoutant les déplacements aux coordonnées actuelles.
+     *
+     * @param deltaX Le déplacement horizontal (positif pour droite, négatif pour gauche)
+     * @param deltaY Le déplacement vertical (positif pour bas, négatif pour haut)
+     */
     public void deplacerDe(int deltaX, int deltaY){
         setCoordonnes(new Coordonnees(this.getCoordonnees().getAbscisse() + deltaX, this.getCoordonnees().getOrdonnee() + deltaY));
     }
 
     /**
-     * Redefinition of the {@code toString} method so it returns
-     * the coordinates and color of our {@code Element}
+     * Retourne une représentation textuelle de l'élément.
+     * Le format est "coordonnées - couleur".
      *
-     * @return the {@code Coordonnes} and the {@code Couleur} of our {@code Element}
+     * @return Une chaîne de caractères représentant l'élément
      */
     @Override
     public String toString() {
@@ -37,13 +74,11 @@ public class Element {
     }
 
     /**
-     * Redefinition of the {@code equals} method so it also compares
-     * if the two objects have the same {@code Coordonnes} and {@code Couleur}
+     * Compare cet élément avec un autre objet.
+     * Deux éléments sont égaux s'ils ont les mêmes coordonnées et la même couleur.
      *
-     * @param o an object to compare to our {@code Element} instance
-     * @return {@code true} if the instance and the Object are the same, or they have the
-     * same {@code Coordonnes} and same {@code Couleur} -- {@code false} if the Object is not
-     * a {@code instanceof} Element
+     * @param o L'objet à comparer avec cet élément
+     * @return true si les objets sont égaux, false sinon
      */
     @Override
     public boolean equals(Object o) {
@@ -54,10 +89,10 @@ public class Element {
     }
 
     /**
-     * Redefinition of the {@code hashCode} method so it returns
-     * the hashCode of our {@code Couleur} and {@code Coordonnes}
+     * Calcule le code de hachage de l'élément.
+     * Le code de hachage est basé sur la couleur et les coordonnées.
      *
-     * @return hash value of the parameters of our instance of {@code Element}
+     * @return Le code de hachage de l'élément
      */
     @Override
     public int hashCode() {
@@ -65,36 +100,36 @@ public class Element {
     }
 
     /**
-     * Returns the coordinates of our {@code Element}
+     * Retourne les coordonnées de l'élément.
      *
-     * @return coordinates
+     * @return Les coordonnées de l'élément
      */
     public Coordonnees getCoordonnees() {
         return this.coordonnes;
     }
 
     /**
-     * Returns the color of our {@code Element}
+     * Retourne la couleur de l'élément.
      *
-     * @return color
+     * @return La couleur de l'élément
      */
     public Couleur getCouleur() {
         return couleur;
     }
 
     /**
-     * Set the cordinates of our {@code Element}
+     * Définit les coordonnées de l'élément.
      *
-     * @param coordonnes new coordinates
+     * @param coordonnes Les nouvelles coordonnées de l'élément
      */
     public void setCoordonnes(Coordonnees coordonnes) {
         this.coordonnes = coordonnes;
     }
 
     /**
-     * Set the color of our {@code Element}
+     * Définit la couleur de l'élément.
      *
-     * @param couleur new color
+     * @param couleur La nouvelle couleur de l'élément
      */
     public void setCouleur(Couleur couleur) {
         this.couleur = couleur;
