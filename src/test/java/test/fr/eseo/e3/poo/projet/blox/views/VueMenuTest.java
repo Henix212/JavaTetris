@@ -31,7 +31,6 @@ public class VueMenuTest {
     @Test
     public void testButtonsHaveActionListeners() {
         JButton jouerButton = null;
-        JButton iaButton = null;
         JButton quitButton = null;
 
         for (Component comp : vueMenu.getComponents()) {
@@ -40,8 +39,6 @@ public class VueMenuTest {
                 String text = btn.getText();
                 if ("Jouer".equals(text)) {
                     jouerButton = btn;
-                } else if ("AI Mode".equals(text)) {
-                    iaButton = btn;
                 } else if ("Quit".equals(text)) {
                     quitButton = btn;
                 }
@@ -50,9 +47,6 @@ public class VueMenuTest {
 
         assertNotNull(jouerButton);
         assertTrue(jouerButton.getActionListeners().length > 0);
-
-        assertNotNull(iaButton);
-        assertTrue(iaButton.getActionListeners().length > 0);
 
         assertNotNull(quitButton);
         assertTrue(quitButton.getActionListeners().length > 0);

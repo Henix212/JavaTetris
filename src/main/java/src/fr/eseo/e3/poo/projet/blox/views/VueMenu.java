@@ -31,20 +31,6 @@ public class VueMenu extends JPanel {
             }
         });
 
-        JButton iaButton = new JButton("AI Mode");
-        iaButton.setFont(new Font("Arial", Font.BOLD, 24));
-        iaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                    VueMenu.this,
-                    "Work in progress",
-                    "AI Mode",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-        });
-
         JButton quit = new JButton("Quit");
         quit.setFont(new Font("Arial", Font.BOLD, 24));
         quit.addActionListener(new ActionListener() {
@@ -66,9 +52,6 @@ public class VueMenu extends JPanel {
 
         gbc.gridy++;
         add(jouer, gbc);
-
-        gbc.gridy++;
-        add(iaButton, gbc);
 
         gbc.gridy++;
         add(quit, gbc);
